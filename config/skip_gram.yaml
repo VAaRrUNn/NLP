@@ -1,0 +1,5 @@
+# All the hyper-parameters/parameters related to skip-gram model
+Hyper-parameters:
+  BATCH_SIZE = 2048
+  NUM_NEGATIVE_SAMPLES = 5
+  WINDOW_SIZE = 4
