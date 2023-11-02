@@ -1,2 +1,4 @@
 BATCH_SIZE: 2048
-NUM_NEGATIVE_SAMPLES: 3
+NUM_SENTENCES: 100_000
+sentences_file: sentences.txt
+metadata_file: sentences_metadata.txt

@@ -1,9 +1,8 @@
 """
-This script with simple load the specified sentences from the dataset
-and dataloader for accessing them.
+This script will download the dataset with specified rows
 
-This will be called by specific models script files to make the initial dataset
 """
+
 
 # Essential Libraries
 import torch
@@ -12,8 +11,10 @@ from torch.utils.data import DataLoader, Dataset, IterableDataset
 
 # Other libraries
 import yaml
+import json # to write dictionaries and variables
 import string
 import warnings
+from pathlib import Path
 from collections import defaultdict
 
 # for type hint
@@ -23,22 +24,30 @@ warnings.filterwarnings('ignore')
 
 # Loading parameters
 # Configuration file
-config_path = r"config/default_config.yaml"
 
+config_path = Path(__file__).parent / "../config/default_config.yaml"
 with open(config_path, 'r') as f:
     config = yaml.safe_load(f)
 
-BATCH_SIZE = config.BATCH_SIZE
-NUM_SENTENCES = config.NUM_SENTENCES
 
+# Loading necessary things from the confic file
+BATCH_SIZE = config["BATCH_SIZE"]
+NUM_SENTENCES = config["NUM_SENTENCES"]
+SENTENCES_FILE = config["sentences_file"]
+METADATA_FILE = config["metadata_file"]
+
+
+sentences_file_path = Path(__file__).parent / "../config/default_config.yaml"
+metadata_file_path = Path(__file__).parent / "../config/default_config.yaml"
+print(SENTENCES_FILE,METADATA_FILE)
 
 class CustomDataset(Dataset):
   def __init__(self, 
                num_sentences=NUM_SENTENCES, 
                batch_size=BATCH_SIZE, 
                split="train",
-               save_path=None):
-    self.save_path = save_path
+               save_path=None,
+               metadata_path=None):
     self.rawdata = load_dataset("bookcorpus", split=split, streaming=True)
     self.new_data = list()
 
@@ -54,7 +63,8 @@ class CustomDataset(Dataset):
     self.vocab_size = len(self.word2idx)
 
     # Now saving the dataset
-    # currently not implemented (ig there is not need )
+    # with open(save_path, 'w') as f:
+      
       
 
   def __len__(self, ):
@@ -119,3 +129,4 @@ class CustomDataset(Dataset):
 
 
 print("done...")
+print(BATCH_SIZE)
